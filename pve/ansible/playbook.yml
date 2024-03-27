@@ -1,4 +1,9 @@
 ---
+- hosts: pve
+  roles:
+    - ubuntu-servers
+    - ubuntu-template
+
 - hosts: localhost
   tasks:
     - name: Print Hello World

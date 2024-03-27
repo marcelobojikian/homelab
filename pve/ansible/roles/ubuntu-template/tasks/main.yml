@@ -1,0 +1,33 @@
+---
+- name: Ensure requirements in place
+  ansible.builtin.apt:
+    pkg:
+    - guestfs-tools
+    - python3-libvirt
+    state: latest
+    update_cache: true
+  become: true
+
+- name: Copy base image to libvirt directory
+  ansible.builtin.copy:
+    src: "/var/lib/vz/template/iso/{{ item.image }}"
+    dest: "/tmp/{{ item.image }}"
+    force: no
+    remote_src: yes
+  with_items: "{{ ubuntu_template }}"
+  register: copy_results
+  
+- name: Configure the image
+  command: |
+    virt-customize -a /tmp/{{ item.image }}  {{ item.command }}
+  with_items: "{{ ubuntu_template }}"
+  when: copy_results is changed
+  
+- name: Copy image configurade to local-lvm
+  ansible.builtin.copy:
+    src: "/tmp/{{ item.image }}"
+    dest: "/var/lib/vz/template/iso/{{ item.template }}"
+    force: no
+    remote_src: yes
+  with_items: "{{ ubuntu_template }}"
+  when: copy_results is changed

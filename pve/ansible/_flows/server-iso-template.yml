@@ -1,0 +1,33 @@
+id: server-iso-template
+namespace: home.lab.pve
+
+tasks:
+
+  - id: setup
+    type: io.kestra.core.tasks.flows.WorkingDirectory
+    tasks:
+
+      - id: git
+        type: io.kestra.plugin.git.Sync
+        url: https://github.com/marcelobojikian/homelab.git
+        branch: main
+        cloneSubmodules: true
+        gitDirectory: pve/ansible
+
+      - id: ansible_task
+        type: io.kestra.plugin.ansible.cli.AnsibleCLI
+        namespaceFiles:
+          enabled: true
+        docker:
+          image: cytopia/ansible:latest-tools
+        env:
+          ANSIBLE_HOST_KEY_CHECKING: "False"
+        commands:
+          - apk add --update sshpass
+          - pip install -r requirements.txt
+          - ansible-playbook -i inventory.ini playbook.yml
+
+
+
+
+

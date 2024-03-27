@@ -1,0 +1,7 @@
+---
+- name: Download Ubuntu LTS servers with check (sha256)
+  ansible.builtin.get_url:
+    url: "https://cloud-images.ubuntu.com/{{ item.name }}/current/{{ item.name }}-server-cloudimg-amd64.img"
+    dest: "/var/lib/vz/template/iso/{{ item.name }}-server-cloudimg-amd64.img"
+    checksum: sha256:{{ item.checksum }}
+  with_items: "{{ ubuntu_servers }}"
