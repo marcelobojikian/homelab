@@ -13,13 +13,16 @@ inputs:
     description: "Download servers from https://cloud-images.ubuntu.com"
     required: true
     values:
-      - trusty
-      - xenial
       - bionic
       - focal
       - jammy
       - mantic
       - noble
+
+  - id: checksum
+    type: STRING
+    description: "Find on https://cloud-images.ubuntu.com/[server]/current/SHA256SUMS with name [server]-server-cloudimg-amd64.img"
+    required: true
 
 tasks:
 
@@ -45,6 +48,7 @@ tasks:
                   ansible.builtin.get_url:
                     url: "{{ vars.url }}{{ inputs.server }}/current/{{ inputs.server }}{{ vars.suffix_name }}"
                     dest: "{{ vars.path_to }}{{ inputs.server }}{{ vars.suffix_name }}"
+                    checksum: sha256:{{ inputs.checksum }}
 
       - id: ansible_task
         type: io.kestra.plugin.ansible.cli.AnsibleCLI
