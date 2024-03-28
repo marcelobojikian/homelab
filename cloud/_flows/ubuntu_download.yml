@@ -1,0 +1,57 @@
+id: ubuntu_download
+namespace: home.lab.cloud
+
+variables:
+  url: https://cloud-images.ubuntu.com/
+  path_to: /var/lib/vz/template/iso/
+  suffix_name: -server-cloudimg-amd64.img
+
+inputs:
+
+  - id: server
+    type: ENUM
+    description: "Download servers from https://cloud-images.ubuntu.com"
+    required: true
+    values:
+      - trusty
+      - xenial
+      - bionic
+      - focal
+      - jammy
+      - mantic
+      - noble
+
+tasks:
+
+  - id: hello
+    type: io.kestra.core.tasks.log.Log
+    message: Download servidor {{ inputs.server }}
+
+  - id: setup
+    type: io.kestra.core.tasks.flows.WorkingDirectory
+    tasks:
+
+      - id: local_files
+        type: io.kestra.core.tasks.storages.LocalFiles
+        inputs:
+          kestra.ini: |
+            [pve]
+            {{ secret('PVE_HOST') }} ansible_user={{ secret('PVE_USER') }} ansible_password={{ secret('PVE_PASS') }}
+          kestrabook.yml: |
+            ---            
+            - hosts: pve
+              tasks:
+                - name: Download Ubuntu LTS servers with check (sha256)
+                  ansible.builtin.get_url:
+                    url: "{{ vars.url }}{{ inputs.server }}/current/{{ inputs.server }}{{ vars.suffix_name }}"
+                    dest: "{{ vars.path_to }}{{ inputs.server }}{{ vars.suffix_name }}"
+
+      - id: ansible_task
+        type: io.kestra.plugin.ansible.cli.AnsibleCLI
+        docker:
+          image: cytopia/ansible:latest-tools
+        env:
+          ANSIBLE_HOST_KEY_CHECKING: "False"
+        commands:
+          - apk add --update sshpass
+          - ansible-playbook -i kestra.ini kestrabook.yml
