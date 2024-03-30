@@ -1,0 +1,52 @@
+id: add-cloud
+namespace: home.lab
+
+inputs:
+
+  - id: os_name
+    type: STRING
+    description: "Label server (whiout space)"
+    required: true
+    defaults:
+      - Debian11-Image
+
+  - id: os_filename
+    type: STRING
+    description: "Filename server"
+    required: true
+    defaults:
+      - debian-11-generic-amd64.qcow2
+
+  - id: os_url
+    type: STRING
+    description: "Url to download"
+    required: true
+    defaults:
+      - https://cloud.debian.org/images/cloud/bullseye/latest/debian-11-generic-amd64.qcow2
+
+  - id: os_checksum
+    type: STRING
+    required: true
+    defaults:
+      - sha512:ab971a745b5081e7a36df56f589e1c11077c0fbec799f5eb1e57acf17236715df4575aa02118dbcf076cbe372ebe9dedf1d1457b7f5873bdcf08bc5f3ac0233c
+
+tasks:
+
+  - id: setup
+    type: io.kestra.core.tasks.flows.WorkingDirectory
+    tasks:
+
+      - id: local_files
+        type: io.kestra.core.tasks.storages.LocalFiles
+        inputs:
+          new-server.yml: |
+              - name: {{ inputs.os_name }}
+                os_file: {{ inputs.os_filename }}
+                url: {{ inputs.os_url }}
+                checksum: {{ inputs.os_checksum }}
+                state: present
+
+      - id: move_file
+        type: io.kestra.plugin.scripts.shell.Commands
+        commands:
+          - mv new-server.yml dynamic/images/{{ inputs.os_name }}.yml
