@@ -1,0 +1,22 @@
+id: setup-pves
+namespace: home.lab
+
+tasks:
+
+  - id: setup
+    type: io.kestra.core.tasks.flows.WorkingDirectory
+    tasks:
+
+      - id: ansible_task
+        type: io.kestra.plugin.ansible.cli.AnsibleCLI
+        namespaceFiles:
+          enabled: true
+        docker:
+          image: cytopia/ansible:latest-tools
+        env:
+          ANSIBLE_HOST_KEY_CHECKING: "False"
+        commands:
+          - apk add --update sshpass
+          - cp -R . /opt/ansible/
+          - cd /opt/ansible
+          - ansible-playbook build_cloud.yml

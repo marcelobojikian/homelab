@@ -1,0 +1,10 @@
+
+- name: setup dynamic variables
+  ansible.builtin.assemble:
+    src: '{{ project_path }}/dynamic/{{ import_from }}/'
+    dest: '{{ project_path }}/group_vars/{{ var_folder }}/{{ import_from }}'
+    remote_src: false
+  with_items: '{{targets}}'
+  loop_control:
+    loop_var: var_folder
+  delegate_to: localhost

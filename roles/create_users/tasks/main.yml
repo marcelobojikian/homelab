@@ -1,0 +1,13 @@
+
+- name: Create user cloud-init default
+  template:
+    src: user_default.j2
+    dest: '{{snippets_path}}{{vm.vmid}}-cloud-init.yml'
+    owner: root
+    group: root
+    mode: 0644
+  with_items: '{{ machines }}'
+  loop_control:
+    loop_var: vm
+  when: 'vm.state == "new"'
+  no_log: true
