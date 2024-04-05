@@ -52,7 +52,7 @@ install(){
 
     cd src/ansible/admin
 
-    ansible-playbook -k setup.yml
+    ansible-playbook setup.yml
     
     deactivate
 }
