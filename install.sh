@@ -50,7 +50,7 @@ install(){
 
     pip install ansible-core
 
-    cd src/admin
+    cd src/ansible/admin
 
     ansible-playbook setup.yml
     
