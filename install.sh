@@ -32,8 +32,8 @@ log() { msg="${@:2}"; printf "$(date "+%Y-%m-%d %H:%M:%S") - [%s] - %s\n" "${1^^
 setup() {
 
     sudo apt update -y
-    sudo apt install python3-venv -y
-    sudo apt install python3-pip -y
+    sudo apt install ansible -y
+    sudo apt install sshpass -y
 
 }
 
@@ -43,18 +43,12 @@ download() {
 
 install(){
 
-    cd homelab
+    cd homelab/src/ansible/admin
 
-    python3 -m venv venv
-    source venv/bin/activate
-
-    pip install ansible-core
-
-    cd src/ansible/admin
+    ansible-galaxy collection install -r requirements.yml
 
     ansible-playbook setup.yml
     
-    deactivate
 }
 ###########################################################
 

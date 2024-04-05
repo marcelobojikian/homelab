@@ -8,12 +8,12 @@
     state: latest
 
 - name: create user
-  user:
+  ansible.builtin.user:
     name: "{{ user }}"
     shell: '/bin/bash'
 
 - name: add user ssh key
-  authorized_key:
+  ansible.posix.authorized_key:
     user: "{{ user }}"
     key: "{{ lookup('ansible.builtin.file', ssh_key) }}"
   vars:

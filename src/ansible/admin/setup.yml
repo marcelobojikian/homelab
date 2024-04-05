@@ -112,5 +112,5 @@
       when: not vault_all.stat.exists
 
     - name: Encrypt group_vars/all/vars
-      ansible.builtin.command: ansible-vault encrypt group_vars/all/vault --vault-password-file files/.vaultkey
+      ansible.builtin.command: ansible-vault encrypt group_vars/all/vault
       when: not vault_all.stat.exists
