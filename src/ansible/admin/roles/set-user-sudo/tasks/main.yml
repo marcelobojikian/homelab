@@ -1,0 +1,28 @@
+
+- name: Install sudo package
+  ansible.builtin.apt:
+    pkg:
+      - sudo
+    update_cache: yes
+    cache_valid_time: 3600
+    state: latest
+
+- name: create user
+  user:
+    name: "{{ user }}"
+    shell: '/bin/bash'
+
+- name: add user ssh key
+  authorized_key:
+    user: "{{ user }}"
+    key: "{{ lookup('ansible.builtin.file', ssh_key) }}"
+  vars:
+    ssh_key: "{{user_key}}"
+
+- name: add user to sudoers
+  ansible.builtin.template:
+    src: templates/set-user-sudo/sudoer_user.j2
+    dest: "/etc/sudoers.d/{{ user }}"
+    owner: root
+    group: root
+    mode: 0440

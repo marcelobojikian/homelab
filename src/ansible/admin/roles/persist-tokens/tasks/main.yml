@@ -1,0 +1,11 @@
+
+- name: Creating a file with token
+  ansible.builtin.copy:
+    dest: "{{ reg.key }}"
+    content: "{{ reg.value.value }}"
+    mode: '0600'
+  with_dict: "{{ tokens | items2dict }}"
+  loop_control:
+    loop_var: reg
+  when: tokens is defined
+  no_log: True

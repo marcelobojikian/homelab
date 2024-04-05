@@ -1,0 +1,50 @@
+- hosts: all
+  become: false
+  gather_facts: false
+
+  tasks:
+
+    - name: Configure repository
+      include_role:
+        name: pre-configure-pve
+
+    - name: Configure storages
+      include_role:
+        name: pre-configure-storages
+      with_items: '{{ storages }}'
+      loop_control:
+        loop_var: storage
+
+    - name: Configure roles
+      include_role:
+        name: pre-configure-roles
+      with_items: '{{ roles }}'
+      loop_control:
+        loop_var: role
+
+    - name: Configure users
+      include_role:
+        name: pre-configure-users
+      with_items: '{{ users }}'
+      loop_control:
+        loop_var: user
+
+    - name: Configure admin user
+      include_role:
+        name: set-user-sudo
+      vars:
+        user: '{{ admin.user }}'
+        user_key: '{{ admin.key_file }}'
+    
+- hosts: localhost
+  become: false
+  gather_facts: false
+
+  tasks:
+
+    - name: Configure users
+      include_role:
+        name: persist-tokens
+      with_items: "{{ groups['all'] }}"
+      vars:
+        tokens: "{{ hostvars[item]['tokens'] }}"
