@@ -1,3 +1,0 @@
-snippets_path: '/var/lib/vz/ansible/snippets/'
-snippets_storage: ansible
-image_storage: ansible
