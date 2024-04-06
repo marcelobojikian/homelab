@@ -26,3 +26,10 @@
   roles:
     - download_servers
     - create_users
+
+- hosts: pve[0]
+  become: false
+  gather_facts: false
+
+  roles:
+    - create_vms

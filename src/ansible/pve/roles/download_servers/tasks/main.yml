@@ -1,13 +1,13 @@
 
 - name: Create download folder
-  file:
-    path: '{{ storage.images }}/0'
+  ansible.builtin.file:
+    path: '{{ storage.images.path }}/0'
     state: directory
 
 - name: Download server images
-  get_url:
+  ansible.builtin.get_url:
     url: '{{ image.url }}'
-    dest: '{{ storage.images }}/0/{{ image.os_file }}'
+    dest: '{{ storage.images.path }}/0/{{ image.os_file }}'
     checksum: '{{ image.checksum }}'
   with_items: '{{ os_images }}'
   loop_control:

@@ -1,0 +1,3 @@
+ansible_user: 
+ansible_ip: 
+ansible_key_file: /opt/ansible/files/public-keys/ansible-key.pub
