@@ -87,30 +87,19 @@
 
     - name: Set pve username
       ansible.builtin.lineinfile:
-        path: group_vars/all/vars
+        path: group_vars/all/vault
         regexp: 'ansible_ssh_user:'
         line: 'ansible_ssh_user: {{ pveUser }}'
-      when: not vault_all.stat.exists
+      when: vault_all.stat.exists
 
     - name: Set pve password
       ansible.builtin.lineinfile:
-        path: group_vars/all/vars
+        path: group_vars/all/vault
         regexp: 'ansible_ssh_pass:'
         line: 'ansible_ssh_pass: {{ pvePass }}'
-      when: not vault_all.stat.exists
+      when: vault_all.stat.exists
       no_log: True
 
-    - ansible.builtin.copy:
-        src: group_vars/all/vars
-        dest: group_vars/all/vault
-      when: not vault_all.stat.exists
-          
-    - name: Remove raw all variables
-      ansible.builtin.file:
-        path: group_vars/all/vars
-        state: absent
-      when: not vault_all.stat.exists
-
-    - name: Encrypt group_vars/all/vars
+    - name: Encrypt group_vars/all/vault
       ansible.builtin.command: ansible-vault encrypt group_vars/all/vault
-      when: not vault_all.stat.exists
+      when: vault_all.stat.exists

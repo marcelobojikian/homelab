@@ -28,4 +28,9 @@
 
 - name: Update repositories cache
   ansible.builtin.apt:
+    pkg:
+      - sudo
+      - python3-proxmoxer
     update_cache: yes
+    cache_valid_time: 3600
+    state: latest

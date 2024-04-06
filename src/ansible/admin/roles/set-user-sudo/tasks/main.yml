@@ -1,12 +1,4 @@
 
-- name: Install sudo package
-  ansible.builtin.apt:
-    pkg:
-      - sudo
-    update_cache: yes
-    cache_valid_time: 3600
-    state: latest
-
 - name: create user
   ansible.builtin.user:
     name: "{{ user }}"
