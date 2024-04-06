@@ -2,13 +2,13 @@
 - name: Disable pve-enterprise repository
   ansible.builtin.lineinfile:
     path: /etc/apt/sources.list.d/pve-enterprise.list
-    search_string: 'deb https://enterprise.proxmox.com/debian/pve bookworm pve-enterprise'
+    regexp: 'deb https://enterprise.proxmox.com/debian/pve bookworm pve-enterprise'
     line: '# deb https://enterprise.proxmox.com/debian/pve bookworm pve-enterprise'
 
 - name: Disable ceph-quincy repository
   ansible.builtin.lineinfile:
     path: /etc/apt/sources.list.d/ceph.list
-    search_string: 'deb https://enterprise.proxmox.com/debian/ceph-quincy bookworm enterprise'
+    regexp: 'deb https://enterprise.proxmox.com/debian/ceph-quincy bookworm enterprise'
     line: '# deb https://enterprise.proxmox.com/debian/ceph-quincy bookworm enterprise'
 
 - name: Add Proxmox VE No-Subscription Repository, NOT recommended for production use
