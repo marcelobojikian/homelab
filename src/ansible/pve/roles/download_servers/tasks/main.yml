@@ -1,0 +1,15 @@
+
+- name: Create download folder
+  file:
+    path: '{{ storage.images }}/0'
+    state: directory
+
+- name: Download server images
+  get_url:
+    url: '{{ image.url }}'
+    dest: '{{ storage.images }}/0/{{ image.os_file }}'
+    checksum: '{{ image.checksum }}'
+  with_items: '{{ os_images }}'
+  loop_control:
+    loop_var: image
+  when: 'image.state == "present"'

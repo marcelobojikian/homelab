@@ -1,0 +1,28 @@
+- hosts: localhost
+  become: false
+  gather_facts: false
+
+  vars:
+    target_hosts:
+      - pve
+    resource_vars:
+      - images
+      - machines
+
+  tasks:
+    - name: Build cloud project
+      include_role:
+        name: build_vars
+      vars:
+        resource_name: '{{ item }}'
+        targets: '{{ target_hosts }}'
+      loop:
+        '{{ resource_vars }}'
+
+- hosts: pve
+  become: false
+  gather_facts: false
+
+  roles:
+    - download_servers
+    - create_users
