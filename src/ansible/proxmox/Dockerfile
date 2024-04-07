@@ -7,4 +7,11 @@ COPY roles ./roles
 COPY ansible.cfg .
 COPY playbook.yml .
 
+USER root
+ 
+RUN mkdir files/
+RUN chmod g+w files/
+
+USER semaphore
+
 EXPOSE 3000

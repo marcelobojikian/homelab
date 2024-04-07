@@ -12,7 +12,7 @@ services:
       context: .
     container_name: homelab
     volumes: 
-      - homelab:/opt/ansible/files:ro
+      - homelab:/opt/ansible/files:rw
     ports:
       - 3000:3000
     environment:
