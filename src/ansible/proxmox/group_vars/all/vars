@@ -1,8 +1,4 @@
 
-admin:
-  user: ansible
-  key_file: files/public-keys/ansible-key.pub
-
 users:
   - api_user: ansible@pam
     api_role: ansibleRole

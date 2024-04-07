@@ -12,19 +12,6 @@
       unsafe: true
       private: true
 
-    - name: pveHost
-      prompt: Set PVE host
-      private: false
-
-    - name: pveUser
-      prompt: Set PVE username
-      private: false
-
-    - name: pvePass
-      prompt: Set PVE password
-      unsafe: true
-      private: true
-
   tasks:
 
     - name: Create files folder
@@ -75,31 +62,3 @@
         path: files/ansible-key.pub
         state: absent
       when: public_key.stat.exists
-
-    - name: Set pve host
-      ansible.builtin.copy:
-        content: "[all]\n{{ pveHost }}"
-        dest: inventory/hosts
-
-    - ansible.builtin.stat:
-        path: group_vars/all/vault
-      register: vault_all
-
-    - name: Set pve username
-      ansible.builtin.lineinfile:
-        path: group_vars/all/vault
-        regexp: 'ansible_ssh_user:'
-        line: 'ansible_ssh_user: {{ pveUser }}'
-      when: vault_all.stat.exists
-
-    - name: Set pve password
-      ansible.builtin.lineinfile:
-        path: group_vars/all/vault
-        regexp: 'ansible_ssh_pass:'
-        line: 'ansible_ssh_pass: {{ pvePass }}'
-      when: vault_all.stat.exists
-      no_log: True
-
-    - name: Encrypt group_vars/all/vault
-      ansible.builtin.command: ansible-vault encrypt group_vars/all/vault
-      when: vault_all.stat.exists

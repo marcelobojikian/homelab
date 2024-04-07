@@ -3,21 +3,15 @@
   ansible.builtin.command: "pveum user add {{ user.api_user }}"
   ignore_errors: True
   register: cmd_response
-  no_log: True
 
 - name: Set Role
-  when: 'cmd_response.rc == 0'
   ansible.builtin.command: "pveum aclmod / -user {{ user.api_user }} -role {{ user.api_role }}"
-  no_log: True
 
 - name: Create user API
-  when: 'cmd_response.rc == 0'
   ansible.builtin.command: "pveum user token add {{ user.api_user }} {{ user.api_token_id }} --privsep 0 --output-format json"
   register: secret_response
-  no_log: True
 
 - name: Export tokens
-  when: 'cmd_response.rc == 0'
   ansible.builtin.set_fact:
     tokens: "{{ tokens | default([]) | 
                     union([{
@@ -25,4 +19,3 @@
                       'value': secret_response.stdout | from_json
                     }]) 
                   }}"
-  no_log: True

@@ -1,4 +1,9 @@
 
+- name: Create tokens folder
+  ansible.builtin.file:
+    path: 'files/tokens'
+    state: directory
+
 - name: Creating a file with token
   ansible.builtin.copy:
     dest: "{{ reg.key }}"
@@ -8,4 +13,4 @@
   loop_control:
     loop_var: reg
   when: tokens is defined
-  no_log: True
+  # no_log: True

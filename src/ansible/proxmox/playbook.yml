@@ -8,6 +8,10 @@
       include_role:
         name: pre-configure-pve
 
+    - name: Pre load Users and Roles
+      include_role:
+        name: pre-load-pve
+
     - name: Configure storages
       include_role:
         name: pre-configure-storages
@@ -21,6 +25,7 @@
       with_items: '{{ roles }}'
       loop_control:
         loop_var: role
+      when: registered_roles is not search(role.name)
 
     - name: Configure users
       include_role:
@@ -28,13 +33,15 @@
       with_items: '{{ users }}'
       loop_control:
         loop_var: user
+      when: registered_users is not search(user.api_user)
 
-    - name: Configure admin user
+    - name: Configure sudo users
       include_role:
         name: set-user-sudo
-      vars:
-        user: '{{ admin.user }}'
-        user_key: '{{ admin.key_file }}'
+      with_items: '{{ sudo_users }}'
+      loop_control:
+        loop_var: user
+      when: sudo_users is defined
     
 - hosts: localhost
   become: false
@@ -42,7 +49,7 @@
 
   tasks:
 
-    - name: Configure users
+    - name: Save tokens
       include_role:
         name: persist-tokens
       with_items: "{{ groups['all'] }}"
