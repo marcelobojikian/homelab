@@ -1,0 +1,6 @@
+src/ansible/files/public-keys/*
+src/ansible/files/tokens/*
+src/ansible/files/ansible-key
+
+src/ansible/group_vars/nodes/images
+src/ansible/group_vars/nodes/machines

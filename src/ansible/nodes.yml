@@ -1,0 +1,58 @@
+- hosts: localhost
+  become: false
+  gather_facts: false
+
+  vars:
+    target_hosts:
+      - nodes
+    resource_vars:
+      - images
+      - machines
+
+  tasks:
+
+    - name: Build resources variables
+      include_role:
+        name: common
+        tasks_from: build_resources
+      vars:
+        resource_name: '{{ name }}'
+        targets: '{{ target_hosts }}'
+      with_items: '{{ resource_vars }}'
+      loop_control:
+        loop_var: name
+      tags:
+        - resources
+        - variables
+
+- hosts: nodes
+  become: false
+  gather_facts: false
+
+  tasks:
+
+    - name: Download servers
+      include_role:
+        name: nodes
+        tasks_from: download_servers
+      vars:
+        storage_path: '{{ storage.images.path }}/0'
+
+    - name: Create init files for users
+      include_role:
+        name: nodes
+        tasks_from: create_vm_users
+      vars:
+        storage_path: '{{ storage.snippets.path }}'
+
+
+- hosts: nodes[0]
+  become: false
+  gather_facts: false
+
+  tasks:
+
+    - name: Create virtual machines
+      include_role:
+        name: nodes
+        tasks_from: create_vms

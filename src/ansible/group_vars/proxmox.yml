@@ -1,0 +1,6 @@
+    
+storages:
+  - name: ansible
+    type: dir
+    path: /var/lib/vz/ansible
+    content: "images,rootdir,vztmpl,backup,iso,snippets"
