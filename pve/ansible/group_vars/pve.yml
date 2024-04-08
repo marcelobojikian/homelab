@@ -1,9 +1,0 @@
----
-
-ubuntu_servers:
-  - { name: noble, checksum: c8297d73ab524f33ded309e1f4fb9febdb95ecd66d85a648987bb3432aef6ebe }
-
-ubuntu_template:
-  - { image: noble-server-cloudimg-amd64.img, 
-      template: noble-template.img, 
-      command: "--install qemu-guest-agent --run-command \"useradd -m -s /bin/bash ubuntu\" --root-password password:root" }
