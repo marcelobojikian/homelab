@@ -59,7 +59,7 @@ vault() {
 
 
     echo Encrypt group_vars
-    for var_file in group_vars/*/vault*; do ansible-vault encrypt $var_file --vault-password-file $VAULT_FILE; done
+    for var_file in dist/group_vars/*/vault*; do ansible-vault encrypt $var_file --vault-password-file $VAULT_FILE; done
 
     echo Encrypt host_vars
     for var_file in dist/host_vars/*; do ansible-vault encrypt $var_file --vault-password-file $VAULT_FILE; done
