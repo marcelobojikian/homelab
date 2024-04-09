@@ -16,7 +16,7 @@ USER semaphore
 
 COPY ansible.cfg .
 COPY proxmox.yml .
-COPY nodes.yml .
+COPY node.yml .
 
 EXPOSE 3000
 

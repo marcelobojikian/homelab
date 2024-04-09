@@ -1,4 +1,0 @@
-
-- name: Add Role
-  ansible.builtin.command: pveum role add {{ role.name }} -privs "{{ role.privs }}"
-  ignore_errors: True

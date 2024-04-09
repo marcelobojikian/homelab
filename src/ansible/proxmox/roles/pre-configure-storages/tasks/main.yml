@@ -1,8 +1,0 @@
-
-- ansible.builtin.stat:
-    path: "{{ storage.path }}"
-  register: storage_dir
-
-- name: Create storage
-  ansible.builtin.command: 'pvesm add {{ storage.type }} {{ storage.name }} -path "{{ storage.path }}" -content "{{ storage.content }}"'
-  when: storage_dir.stat.isdir is undefined

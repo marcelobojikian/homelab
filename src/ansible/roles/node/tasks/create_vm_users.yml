@@ -11,4 +11,4 @@
     loop_var: vm
   when: 'vm.state == "new"'
   become: yes
-  # no_log: true
+  no_log: true

@@ -1,7 +1,7 @@
 
 - name: Create VMs
   community.general.proxmox_kvm:
-    api_host: '{{ api_host }}'
+    api_host: '{{ node_host }}'
     api_user: '{{ api_user }}'
     api_token_id: '{{ api_token_id }}'
     api_token_secret: "{{ lookup('ansible.builtin.file', api_token_secret) }}"
@@ -39,7 +39,7 @@
 
 - name: Update network settings
   community.general.proxmox_kvm:
-    api_host: '{{ api_host }}'
+    api_host: '{{ node_host }}'
     api_user: '{{ api_user }}'
     api_token_id: '{{ api_token_id }}'
     api_token_secret: "{{ lookup('ansible.builtin.file', api_token_secret) }}"
@@ -59,7 +59,7 @@
 
 - name: Resize disk
   community.general.proxmox_disk:
-    api_host: '{{ api_host }}'
+    api_host: '{{ node_host }}'
     api_user: '{{ api_user }}'
     api_token_id: '{{ api_token_id }}'
     api_token_secret: "{{ lookup('ansible.builtin.file', api_token_secret) }}"
@@ -78,7 +78,7 @@
 
 - name: Start VMs
   community.general.proxmox_kvm:
-    api_host: '{{ api_host }}'
+    api_host: '{{ node_host }}'
     api_user: '{{ api_user }}'
     api_token_id: '{{ api_token_id }}'
     api_token_secret: "{{ lookup('ansible.builtin.file', api_token_secret) }}"
