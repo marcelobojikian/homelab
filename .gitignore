@@ -5,4 +5,6 @@ src/ansible/files/ansible-key
 src/ansible/group_vars/node/images
 src/ansible/group_vars/node/machines
 
+src/ansible/resources/**/*.yml
+
 dist
