@@ -1,0 +1,28 @@
+{
+  "type": "production",
+  "proxmox": {
+    "alias": "lab.proxmox",
+    "ip": "",
+    "ssh_user": "",
+    "ssh_pass": ""
+  },
+  "node": {
+    "alias": "lab.node",
+    "user": "",
+    "key_file": "/opt/ansible/files/public-keys/______-key.pub",
+    "ip": "",
+    "api_user": "______@pam",
+    "api_token_id": "_____-token",
+    "api_token_secret": "/opt/ansible/files/tokens/_______.token"
+  },
+  "semaphore": {
+    "google": {
+      "client_id": "",
+      "client_secret": ""
+    },
+    "github": {
+      "client_id": "",
+      "client_secret": ""
+    }
+  }
+}

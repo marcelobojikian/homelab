@@ -1,0 +1,111 @@
+{
+        "mysql": {
+                "host": "",
+                "user": "",
+                "pass": "",
+                "name": "",
+                "options": null
+        },
+        "bolt": {
+                "host": "/var/lib/semaphore/database.boltdb",
+                "user": "",
+                "pass": "",
+                "name": "",
+                "options": null
+        },
+        "postgres": {
+                "host": "",
+                "user": "",
+                "pass": "",
+                "name": "",
+                "options": null
+        },
+        "dialect": "bolt",
+        "port": "",
+        "interface": "",
+        "tmp_path": "/tmp/semaphore",
+        "ssh_config_path": "",
+        "git_client": "",
+        "web_host": "",
+        "cookie_hash": "PF7GKgmT1Kg2EZIVC34/Cd7amWaMT3ZOSaH4g+Yh/VU=",
+        "cookie_encryption": "3sT/lzDIHRNcpHGP4pqZF0Pl0yMeZWUfiAeu6Eli9N4=",
+        "access_key_encryption": "N015t7foXPGjMdyNr1tg84TKbJHZhk7WWSV4NwXm7zk=",
+        "email_alert": false,
+        "email_sender": "",
+        "email_host": "",
+        "email_port": "",
+        "email_username": "",
+        "email_password": "",
+        "email_secure": false,
+        "ldap_enable": false,
+        "ldap_binddn": "",
+        "ldap_bindpassword": "",
+        "ldap_server": "",
+        "ldap_searchdn": "",
+        "ldap_searchfilter": "",
+        "ldap_mappings": {
+                "dn": "",
+                "mail": "",
+                "uid": "",
+                "cn": ""
+        },
+        "ldap_needtls": false,
+        "telegram_alert": false,
+        "telegram_chat": "",
+        "telegram_token": "",
+        "slack_alert": false,
+        "slack_url": "",
+        "rocketchat_alert": false,
+        "rocketchat_url": "",
+        "microsoft_teams_alert": false,
+        "microsoft_teams_url": "",
+        "oidc_providers": {
+                "google": {
+                        "color": "red",
+                        "icon": "google",
+                        "display_name": "Sign in with Google",
+                        "provider_url": "https://accounts.google.com",
+                        "client_id": "{{ semaphore.google.client_id }}",
+                        "client_secret": "{{ semaphore.google.client_secret }}",
+                        "redirect_url": "http://localhost:3000/api/auth/oidc/google/redirect",
+                        "username_claim": "|",
+                        "name_claim": "name",
+                        "order": 2
+                },
+                "github": {
+                        "icon": "github",
+                        "display_name": "Sign in with GitHub",
+                        "client_id": "{{ semaphore.github.client_id }}",
+                        "client_secret": "{{ semaphore.github.client_secret }}",
+                        "redirect_url": "http://localhost:3000/api/auth/oidc/github/redirect",
+                        "endpoint": {
+                                "auth": "https://github.com/login/oauth/authorize",
+                                "token": "https://github.com/login/oauth/access_token",
+                                "userinfo": "https://api.github.com/user"
+                        },
+                        "scopes": [
+                                "read:user",
+                                "user:email"
+                        ],
+                        "username_claim": "|",
+                        "email_claim": "email | {{ '{{' }} .id {{ '}}' }}@github.your-domain.com",
+                        "name_claim": "name",
+                        "order": 1
+                }
+        },
+        "max_task_duration_sec": 0,
+        "max_parallel_tasks": 0,
+        "runner_registration_token": "",
+        "password_login_disable": false,
+        "non_admin_can_create_project": false,
+        "use_remote_runner": false,
+        "runner": {
+                "api_url": "",
+                "registration_token": "",
+                "config_file": "",
+                "one_off": false,
+                "webhook": "",
+                "max_parallel_tasks": 0
+        },
+        "global_integration_alias": ""
+}

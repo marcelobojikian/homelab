@@ -7,4 +7,7 @@ src/ansible/group_vars/node/machines
 
 src/ansible/resources/**/*.yml
 
+src/config/vars/**
+!src/config/vars/example.json
+
 dist
