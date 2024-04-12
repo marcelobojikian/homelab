@@ -3,6 +3,7 @@ version: "3"
 
 volumes:
   homelab:
+  boltdb:
 
 services:
 
@@ -13,6 +14,7 @@ services:
     container_name: homelab
     volumes: 
       - homelab:/opt/ansible/files:rw
+      - boltdb:/var/lib/semaphore 
     ports:
       - 3000:3000
     environment:

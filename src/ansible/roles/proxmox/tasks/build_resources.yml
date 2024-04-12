@@ -9,4 +9,3 @@
     - users
     - storages
     - sudo_users
-  delegate_to: proxmox

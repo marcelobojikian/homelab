@@ -9,8 +9,6 @@ COPY inventory ./inventory
 COPY resources ./resources
 COPY roles ./roles
 
-COPY semaphore.json /etc/semaphore/config.json
-
 USER root 
 RUN chmod g+w files/
 
