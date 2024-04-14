@@ -1,30 +1,4 @@
-- hosts: localhost
-  become: false
-  gather_facts: false
-
-  vars:
-    target_hosts:
-      - node
-    resource_vars:
-      - images
-      - machines
-
-  tasks:
-
-    - name: Build resources variables
-      include_role:
-        name: common
-        tasks_from: build_resources
-      vars:
-        resource_name: '{{ name }}'
-        targets: '{{ target_hosts }}'
-      with_items: '{{ resource_vars }}'
-      loop_control:
-        loop_var: name
-      tags:
-        - resources
-        - variables
-
+---
 - hosts: node
   become: false
   gather_facts: false

@@ -1,19 +1,4 @@
----    
-- hosts: localhost
-  become: false
-  gather_facts: false
-
-  tasks:
-
-    - name: Build resources variables
-      include_role:
-        name: proxmox
-        tasks_from: build_resources
-      tags:
-        - resources
-        - variables
-        - proxmox
-
+---
 - hosts: proxmox
   become: false
   gather_facts: false
