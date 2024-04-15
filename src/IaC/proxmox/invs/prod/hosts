@@ -1,0 +1,5 @@
+[proxmox]
+localhost ansible_host=
+
+[node]
+localhost ansible_host=

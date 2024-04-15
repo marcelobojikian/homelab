@@ -1,0 +1,5 @@
+[proxmox]
+localhost ansible_connection=local
+
+[node]
+localhost ansible_connection=local

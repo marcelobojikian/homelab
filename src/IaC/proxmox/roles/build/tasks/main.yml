@@ -1,0 +1,44 @@
+
+- name: Build resources variables (common)
+  include_tasks: build_resource.yml
+  when: resource_path is defined
+  vars:
+    resource_name: '{{ name }}'
+    targets: '{{ common.target_group_vars }}'
+  with_items: '{{ common.resource_vars }}'
+  loop_control:
+    loop_var: name
+  tags:
+    - resources
+    - variables
+    - common
+
+- name: Build resources variables (proxmox)
+  include_tasks: build_resource.yml
+  when: resource_path is defined
+  vars:
+    resource_from: '/proxmox'
+    resource_name: '{{ name }}'
+    targets: 'proxmox'
+  with_items: '{{ proxmox.resource_vars }}'
+  loop_control:
+    loop_var: name
+  tags:
+    - resources
+    - variables
+    - proxmox
+
+- name: Build resources variables (node)
+  include_tasks: build_resource.yml
+  when: resource_path is defined
+  vars:
+    resource_from: '/node'
+    resource_name: '{{ name }}'
+    targets: 'node'
+  with_items: '{{ node.resource_vars }}'
+  loop_control:
+    loop_var: name
+  tags:
+    - resources
+    - variables
+    - node

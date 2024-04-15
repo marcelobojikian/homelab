@@ -1,0 +1,16 @@
+
+- name: Create headers on {{ resource_name }}
+  ansible.builtin.copy:
+    dest: "{{ resource_path }}{{ resource_from }}/{{ resource_name }}/.header"
+    content: "{{ resource_name }}:"
+    mode: '0600'
+
+- name: Setup resource variable {{ resource_name }}
+  ansible.builtin.assemble:
+    src: '{{ resource_path }}{{ resource_from }}/{{ resource_name }}/'
+    dest: '{{ project_path }}/group_vars/{{ group_var_folder }}/{{ resource_name }}'
+    remote_src: false
+  with_items: '{{ targets }}'
+  loop_control:
+    loop_var: group_var_folder
+  delegate_to: localhost

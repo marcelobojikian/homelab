@@ -1,0 +1,9 @@
+---    
+- hosts: localhost
+  become: false
+  gather_facts: false
+
+  roles:
+    - role: build
+        
+

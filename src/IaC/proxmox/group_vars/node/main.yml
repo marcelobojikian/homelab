@@ -1,0 +1,22 @@
+api_host: '{{inventory_hostname}}'
+
+drive_storage: local-lvm
+drive_format: qcow2
+linux_bridge: vmbr0
+
+storage:
+  dump: 
+    id: ansible
+    path: '/var/lib/vz/ansible/dump'
+  images:
+    id: ansible
+    path: '/var/lib/vz/ansible/images'
+  private: 
+    id: ansible
+    path: '/var/lib/vz/ansible/private'
+  snippets: 
+    id: ansible
+    path: '/var/lib/vz/ansible/snippets'
+  template: 
+    id: ansible
+    path: '/var/lib/vz/ansible/template'

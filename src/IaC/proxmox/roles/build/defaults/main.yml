@@ -1,0 +1,14 @@
+common:
+  target_group_vars:
+    - node
+  resource_vars:
+    - os_images
+    - machines
+proxmox:
+  resource_vars:
+    - roles
+    - users
+    - storages
+    - sudo_users
+node:
+  resource_vars: {}

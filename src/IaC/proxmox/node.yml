@@ -1,0 +1,51 @@
+---
+- hosts: node
+  become: false
+  gather_facts: false
+
+  tasks:
+
+    - name: Download servers
+      include_role:
+        name: node
+        tasks_from: download_servers
+      vars:
+        storage_path: '{{ storage.images.path }}/0'
+      tags:
+        - node
+
+    - name: Create init files for users
+      include_role:
+        name: node
+        tasks_from: create_vm_users
+      vars:
+        storage_path: '{{ storage.snippets.path }}'
+      tags:
+        - node
+
+
+- hosts: node[0]
+  become: false
+  gather_facts: false
+
+  tasks:
+
+    - name: Create virtual machines
+      include_role:
+        name: node
+        tasks_from: create_vms
+      vars:
+        node_host: '{{ ansible_host }}'
+      tags:
+        - node
+        - first
+
+    - name: Create template machines
+      include_role:
+        name: node
+        tasks_from: create_templates
+      vars:
+        node_host: '{{ ansible_host }}'
+      tags:
+        - node
+        - first
