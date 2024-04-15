@@ -1,0 +1,7 @@
+[submodule "src/iaac/resources"]
+	path = src/iaac/resources
+	url = https://github.com/marcelobojikian/homelab-resources/resources
+
+[submodule "src/iaac/security"]
+	path = src/iaac/security
+	url = https://github.com/marcelobojikian/homelab-resources/security
