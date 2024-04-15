@@ -11,7 +11,7 @@
     vmid: '{{ vm.vmid }}'
     cores: '{{ vm.cores }}'
     memory: '{{ vm.memory }}'
-    net: '{"net0":"virtio,bridge={{ linux_bridge }},tag={{ vm.vlan }},firewall=1"}'
+    net: '{"net0":"virtio,bridge={{ linux_bridge }},firewall=1"}'
     cicustom: 'user={{ storage.snippets.id }}:snippets/{{ vm.vmid }}-cloud-init.yml'
     scsi:
       scsi0: '{{ drive_storage }}:0,import-from={{ storage.images.id }}:0/{{ vm.image_file }},format={{ drive_format }},iothread=1'
@@ -21,11 +21,9 @@
     vga: serial0
     serial: '{"serial0":"socket"}'
     scsihw: virtio-scsi-single
-    ostype: 'l26'
     onboot: 'no'
-    cpu: 'host'
+    kvm: false
     sockets: 1
-    balloon: 0
     boot: order=scsi0
     ipconfig:
       ipconfig0: 'ip=dhcp'
@@ -35,7 +33,8 @@
   with_items: '{{ machines }}'
   loop_control:
     loop_var: vm
-  when: 'vm.state == "new"'
+  when: (vm.state == "new") or
+        (vm.state == 'template')
 
 - name: Update network settings
   community.general.proxmox_kvm:
@@ -54,8 +53,8 @@
   with_items: '{{ machines }}'
   loop_control:
     loop_var: vm
-  when: (vm.state == "new") and
-        (vm.ipv4mode == 'static')
+  when: (vm.state == "new" or vm.state == 'template') and
+        (vm.ipv4mode is defined and vm.ipv4mode == 'static')
 
 - name: Resize disk
   community.general.proxmox_disk:
@@ -67,14 +66,15 @@
     vmid: '{{ vm.vmid }}'
 
     disk: 'scsi0'
-    size: '32G'
+    size: '{{ vm.disk_size }}'
     state: 'resized'
     timeout: 60
 
   with_items: '{{ machines }}'
   loop_control:
     loop_var: vm
-  when: 'vm.state == "new"'
+  when: (vm.state == "new") or
+        (vm.state == 'template')
 
 - name: Start VMs
   community.general.proxmox_kvm:

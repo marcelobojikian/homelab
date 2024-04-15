@@ -39,3 +39,13 @@
       tags:
         - node
         - first
+
+    - name: Create template machines
+      include_role:
+        name: node
+        tasks_from: create_templates
+      vars:
+        node_host: '{{ ansible_host }}'
+      tags:
+        - node
+        - first

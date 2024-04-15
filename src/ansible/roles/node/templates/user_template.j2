@@ -1,7 +1,6 @@
 #cloud-config
 hostname: {{ vm.name }}
 manage_etc_hosts: true
-fqdn: {{ vm.name }}.{{ domain_name }}
 user: {{ ansible_user }}
 ssh_authorized_keys:
   - {{ lookup('ansible.builtin.file', "{{ ansible_key_file }}") }}

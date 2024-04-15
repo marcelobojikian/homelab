@@ -12,3 +12,17 @@
   when: 'vm.state == "new"'
   become: yes
   no_log: true
+
+- name: Create user cloud-init template
+  template:
+    src: templates/user_template.j2
+    dest: '{{ storage_path }}/{{ vm.vmid }}-cloud-init.yml'
+    owner: root
+    group: root
+    mode: 0644
+  with_items: '{{ machines }}'
+  loop_control:
+    loop_var: vm
+  when: 'vm.state == "template"'
+  become: yes
+  no_log: true
