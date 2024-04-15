@@ -1,5 +1,5 @@
-src/ansible/files/public-keys/*
-src/ansible/files/tokens/*
+src/ansible/files/ansible-key.pub
+src/ansible/files/ansible.token
 src/ansible/files/ansible-key
 
 src/ansible/group_vars/node/images

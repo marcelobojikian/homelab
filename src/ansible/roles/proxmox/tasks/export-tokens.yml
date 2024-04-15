@@ -1,12 +1,7 @@
 
-- name: Create tokens folder
-  ansible.builtin.file:
-    path: 'files/tokens'
-    state: directory
-
 - name: Creating a file with token
   ansible.builtin.copy:
-    dest: "{{ project_path }}/{{ reg.key }}"
+    dest: "{{ token_path | default(project_path+'/files') }}/{{ reg.key }}"
     content: "{{ reg.value.value }}"
     mode: '0600'
   with_dict: "{{ tokens | items2dict }}"
