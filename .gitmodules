@@ -1,0 +1,3 @@
+[submodule "src/iaac/module"]
+	path = src/iaac/module
+	url = https://github.com/marcelobojikian/homelab-resources.git
