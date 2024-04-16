@@ -3,7 +3,7 @@ hostname: {{ vm.name }}
 manage_etc_hosts: true
 user: {{ ansible_user }}
 ssh_authorized_keys:
-  - {{ lookup('ansible.builtin.file', "{{ ansible_key_file }}") }}
+  - {{ lookup('ansible.builtin.file', "{{ [ public_key_path , '/', ansible_key_file ] | join }}") }}
 chpasswd:
   expire: False
 users:

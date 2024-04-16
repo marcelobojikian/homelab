@@ -4,7 +4,7 @@
     api_host: '{{ node_host }}'
     api_user: '{{ api_user }}'
     api_token_id: '{{ api_token_id }}'
-    api_token_secret: "{{ lookup('ansible.builtin.file', api_token_secret) }}"
+    api_token_secret: "{{ lookup('ansible.builtin.file', [ token_path , '/', api_token_secret ] | join ) }}"    
     node: '{{ vm.node }}'
     name: '{{ vm.name }}'
     vmid: '{{ vm.vmid }}'
