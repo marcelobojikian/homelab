@@ -22,7 +22,8 @@
     serial: '{"serial0":"socket"}'
     scsihw: virtio-scsi-single
     onboot: 'no'
-    kvm: false
+    cpu: '{{ vm.cpu | default("kvm64") }}'
+    kvm: '{{ vm.kvm | default("false") }}'
     sockets: 1
     boot: order=scsi0
     ipconfig:

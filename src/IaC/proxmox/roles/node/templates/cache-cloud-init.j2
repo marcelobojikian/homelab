@@ -1,8 +1,10 @@
 #cloud-config
+hostname: {{ vm.name }}
 manage_etc_hosts: true
+fqdn: {{ vm.name }}.{{ domain_name }}
 user: {{ ansible_user }}
 ssh_authorized_keys:
-  - {{ lookup('ansible.builtin.file', "{{ [ public_key_path , '/', ansible_key_file ] | join }}") }}
+  - {{ lookup('ansible.builtin.file', "{{ [ public_key_path , '/', ansible_key_file ] | join }}") }}  
 chpasswd:
   expire: False
 users:
@@ -17,7 +19,8 @@ runcmd:
   - systemctl enable qemu-guest-agent
   - systemctl start qemu-guest-agent
   - ufw limit proto tcp from {{ ansible_ip }} to any port 22
+  - ufw allow proto tcp from 192.168.1.0/24 to any port 3142
   - ufw enable
   - locale-gen {{ locale }}
   - localectl set-locale LANG={{ locale }}
-  - chfn -f Ansible {{ ansible_user }}
+  - chfn -f Ansible {{ ansible_user }}  

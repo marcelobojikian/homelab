@@ -6,10 +6,3 @@
 - name: Create storage
   ansible.builtin.command: 'pvesm add {{ storage.type }} {{ storage.name }} -path "{{ storage.path }}" -content "{{ storage.content }}"'
   when: storage_dir.stat.isdir is undefined
-
-- name: Change storage ownership, group and permissions
-  ansible.builtin.file:
-    path: "{{ storage.path }}"
-    owner: root
-    group: "{{ storage.name }}"
-    mode: '0664'
