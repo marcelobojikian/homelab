@@ -1,0 +1,7 @@
+---
+- hosts: dns_server
+  become: false
+  gather_facts: false
+  
+  roles:
+    - dns-server

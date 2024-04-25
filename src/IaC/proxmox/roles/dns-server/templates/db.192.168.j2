@@ -1,0 +1,16 @@
+$TTL 24h
+$ORIGIN 168.192.in-addr.arpa.
+@	IN	SOA	ns.{{ domain_name }}. admin.{{ domain_name }}. (
+					1       ; serial number
+					24h		; refresh
+					2h		; update retry 
+					1000h	; expire
+					2d		; minimum
+					)
+				
+	IN	NS	ns.{{ domain_name }}.
+	
+$ORIGIN 1.168.192.in-addr.arpa.
+171	IN	PTR		pve.{{ domain_name }}.
+210	IN	PTR		cache.{{ domain_name }}.
+205	IN	PTR		storage.{{ domain_name }}.

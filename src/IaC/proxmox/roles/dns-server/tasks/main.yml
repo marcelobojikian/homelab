@@ -1,0 +1,73 @@
+
+- name: Install repositories dependencies
+  ansible.builtin.apt:
+    pkg:
+      - bind9
+    update_cache: yes
+    cache_valid_time: 3600
+    state: latest
+  become: yes
+
+- name: Import db.domain.lan
+  ansible.builtin.template:
+    src: db.domain.lan.j2
+    dest: /var/lib/bind/db.domain.lan
+  become: yes
+
+- name: Import db.192.168
+  ansible.builtin.template:
+    src: db.192.168.j2
+    dest: /var/lib/bind/db.192.168
+  become: yes
+
+- name: Import named.conf.local
+  ansible.builtin.template:
+    src: named.conf.local.j2
+    dest: /etc/bind/named.conf.local
+  become: yes
+
+- name: Import named.conf.options
+  ansible.builtin.copy:
+    src: named.conf.options
+    dest: /etc/bind/named.conf.options
+  become: yes
+
+- name: Import rndc.conf
+  ansible.builtin.copy:
+    src: rndc.conf
+    dest: /etc/bind/rndc.conf
+  become: yes
+  
+- name: Set tsig-key
+  ansible.builtin.template:
+    src: 'named.conf.key.j2'
+    dest: '/etc/bind/named.conf.key'
+    owner: root
+    group: bind
+    mode: '0640'
+  become: yes 
+
+# - name: Disable listining port 53 on ubuntu
+#   # when: ansible_os_family == "Ubuntu" or ansible_os_family == "Debian"
+#   ansible.builtin.lineinfile:
+#     path: /etc/systemd/resolved.conf
+#     regexp: '#DNSStubListener=yes'
+#     line: 'DNSStubListener=no'
+#   # notify: restart bind
+#   become: yes
+
+- name: Restart resolved service
+  ansible.builtin.systemd_service:
+    state: restarted
+    daemon_reload: true
+    name: systemd-resolved
+  become: yes
+
+- name: Restart named service
+  ansible.builtin.systemd_service:
+    state: restarted
+    daemon_reload: true
+    name: named
+  become: yes
+
+  
