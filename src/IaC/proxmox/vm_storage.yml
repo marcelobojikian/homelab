@@ -1,7 +1,7 @@
 ---
-- hosts: dns_server
+- hosts: vm_storage
   become: false
   gather_facts: false
   
   roles:
-    - dns-server
+    - storage-server

@@ -14,10 +14,10 @@
       tags:
         - node
 
-    - name: Create init files for users
+    - name: Build cloud-init files
       include_role:
         name: node
-        tasks_from: create_vm_users
+        tasks_from: create_cloud_init_files
       vars:
         storage_path: '{{ storage.snippets.path }}'
       tags:

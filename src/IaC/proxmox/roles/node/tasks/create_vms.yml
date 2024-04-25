@@ -34,8 +34,7 @@
   with_items: '{{ machines }}'
   loop_control:
     loop_var: vm
-  when: (vm.state == "new") or
-        (vm.state == 'template')
+  when: vm.state == "new"
 
 - name: Update network settings
   community.general.proxmox_kvm:
@@ -54,7 +53,7 @@
   with_items: '{{ machines }}'
   loop_control:
     loop_var: vm
-  when: (vm.state == "new" or vm.state == 'template') and
+  when: vm.state == "new" and
         (vm.ipv4mode is defined and vm.ipv4mode == 'static')
 
 - name: Resize disk
@@ -74,8 +73,7 @@
   with_items: '{{ machines }}'
   loop_control:
     loop_var: vm
-  when: (vm.state == "new") or
-        (vm.state == 'template')
+  when: vm.state == "new"
 
 - name: Start VMs
   community.general.proxmox_kvm:

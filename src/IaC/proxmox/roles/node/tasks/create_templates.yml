@@ -1,4 +1,40 @@
 
+- name: Create template VMs
+  community.general.proxmox_kvm:
+    api_host: '{{ node_host }}'
+    api_user: '{{ api_user }}'
+    api_token_id: '{{ api_token_id }}'
+    api_token_secret: "{{ lookup('ansible.builtin.file', [ token_path , '/', api_token_secret ] | join ) }}"
+
+    node: '{{ vm.node }}'
+    vmid: '{{ vm.vmid }}'
+    name: '{{ vm.name }}'
+
+    net: '{"net0":"virtio,bridge={{ linux_bridge }},firewall=1"}'
+    cicustom: 'user={{ storage.snippets.id }}:snippets/default-cloud-init.yml'
+    scsi:
+      scsi0: '{{ drive_storage }}:0,import-from={{ storage.images.id }}:0/{{ vm.image_file }},format={{ drive_format }},iothread=1'
+    ide:
+      ide2: '{{ drive_storage }}:cloudinit'
+
+    vga: serial0
+    serial: '{"serial0":"socket"}'
+    scsihw: virtio-scsi-single
+    onboot: 'no'
+    cpu: kvm64
+    kvm: false
+    sockets: 1
+    boot: order=scsi0
+    ipconfig:
+      ipconfig0: 'ip=dhcp'
+    agent: 'enabled=1'
+    timeout: 700
+
+  with_items: '{{ machines }}'
+  loop_control:
+    loop_var: vm
+  when: vm.state == "template"
+
 - name: Convert VMs templates
   community.general.proxmox_kvm:
     api_host: '{{ node_host }}'

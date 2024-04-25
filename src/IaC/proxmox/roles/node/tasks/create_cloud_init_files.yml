@@ -15,8 +15,8 @@
 
 - name: Create user cloud-init (tofu)
   template:
-    src: templates/user_template.j2
-    dest: '{{ storage_path }}/default-cloud-init.yml'
+    src: templates/tofu_template.j2
+    dest: '{{ storage_path }}/tofu-cloud-init.yml'
     owner: root
     group: root
     mode: 0644
