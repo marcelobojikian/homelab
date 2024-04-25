@@ -1,0 +1,7 @@
+---
+- hosts: storage_server
+  become: false
+  gather_facts: false
+  
+  roles:
+    - storage-server
