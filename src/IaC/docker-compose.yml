@@ -12,7 +12,14 @@ services:
     image: homelab/main:v1
     container_name: homelab
     volumes: 
-      - ./module:/home/semaphore
+      - homelab:/home/semaphore
+      - ./proxmox/roles:/opt/ansible/proxmox/roles
+      - ./proxmox/ansible.cfg:/opt/ansible/proxmox/ansible.cfg
+      - ./proxmox/setup.yml:/opt/ansible/proxmox/setup.yml
+      - ./proxmox/proxmox.yml:/opt/ansible/proxmox/proxmox.yml
+      - ./proxmox/node.yml:/opt/ansible/proxmox/node.yml
+      - ./proxmox/vm_dns.yml:/opt/ansible/proxmox/vm_dns.yml
+      - ./proxmox/vm_storage.yml:/opt/ansible/proxmox/vm_storage.yml
     ports:
       - 3000:3000
     environment:

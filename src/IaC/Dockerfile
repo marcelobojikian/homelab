@@ -6,7 +6,10 @@ COPY proxmox ./proxmox
 COPY module /home/semaphore
 
 USER root 
-RUN chmod g+w proxmox/collections/
+
+RUN chown -R semaphore: proxmox/collections/
+RUN chown -R semaphore: proxmox/group_vars/
+RUN chown -R semaphore: proxmox/invs/
 
 RUN chown -R semaphore: /home/semaphore/
 
