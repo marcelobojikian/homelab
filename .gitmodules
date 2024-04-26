@@ -1,6 +1,3 @@
-[submodule "src/IaC/module"]
-	path = src/IaC/module
-	url = https://github.com/marcelobojikian/homelab-resources.git
 [submodule "src/module"]
 	path = src/module
 	url = https://github.com/marcelobojikian/homelab-resources.git
