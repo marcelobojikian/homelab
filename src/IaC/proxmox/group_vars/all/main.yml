@@ -1,4 +1,3 @@
-project_path: '/opt/ansible/proxmox'
 domain_name: 'homelab.lan'
 timezone: 'Europe/Dublin'
 locale: 'en_GB.UTF-8'

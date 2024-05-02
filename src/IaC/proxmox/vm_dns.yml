@@ -2,6 +2,9 @@
 - hosts: vm_dns
   become: false
   gather_facts: false
+
+  vars:
+    dns_key_path: "{{ IAC_MODULE }}/security/dns"
   
   roles:
     - dns-server

@@ -198,22 +198,20 @@ __proxmox/group_vars/proxmox/vault.yml__
 
     ![Image showing the environment configuration](assets/environment_v1.png "Environment configuration")
   
-    By default, the data in the __module__ folder goes to */home/semaphore* and can be:
+    By default, the data in the __module__ folder goes to */home/semaphore/module* and can be:
     ```json
-    {
-      "resource_path": "/home/semaphore/resources",
-      "token_path": "/home/semaphore/security/tokens",
-      "public_key_path": "/home/semaphore/security/public-keys",
-      "private_key_path": "/home/semaphore/security/private-keys"
+    {      
+      "IAC_ANSIBLE_PATH": "/opt/ansible/iac",
+      "IAC_MODULE": "/home/semaphore/module"
     }
     ```
 
     For ansible to always use the SSH private key, enter its location in the __ANSIBLE_PRIVATE_KEY_FILE__ variable.
-    > SIf the __vault.yml__ files are encrypted, the __ANSIBLE_VAULT_PASSWORD_FILE__ variable can be set to find out which file contains the decryption key.
+    > If the __vault.yml__ files are encrypted, the __ANSIBLE_VAULT_PASSWORD_FILE__ variable can be set to find out which file contains the decryption key.
     ```json
     {
-      "ANSIBLE_PRIVATE_KEY_FILE": "/home/semaphore/security/private-keys/ansible-key",
-      "ANSIBLE_VAULT_PASSWORD_FILE": "/home/semaphore/security/vault/production.key"
+      "ANSIBLE_PRIVATE_KEY_FILE": "/home/semaphore/module/security/private-keys/ansible-key",
+      "ANSIBLE_VAULT_PASSWORD_FILE": "/home/semaphore/module/security/vault/production.key"
     }
     ```
 

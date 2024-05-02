@@ -3,6 +3,10 @@
   become: false
   gather_facts: false
 
+  vars:
+    project_path: '{{ IAC_ANSIBLE_PATH }}'
+    resource_path: "{{ IAC_MODULE }}/resources"
+
   roles:
     - role: build
         

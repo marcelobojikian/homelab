@@ -3,6 +3,9 @@
   become: false
   gather_facts: false
 
+  vars:
+    public_key_path: "{{ IAC_MODULE }}/security/public-keys"
+
   tasks:
 
     - name: Download servers
@@ -27,6 +30,9 @@
 - hosts: node[0]
   become: false
   gather_facts: false
+
+  vars:
+    token_path: "{{ IAC_MODULE }}/security/tokens"
 
   tasks:
 
