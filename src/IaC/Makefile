@@ -10,9 +10,6 @@ encrypt:
 decrypt:
 	./scripts/decrypt.sh proxmox ../module/security/vault/production.key
 
-ps:
-	sudo docker ps
-
 up:
 	sudo docker-compose up -d
 
