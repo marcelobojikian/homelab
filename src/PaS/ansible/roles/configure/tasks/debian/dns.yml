@@ -1,0 +1,8 @@
+
+- name: Add DNS to /etc/resolv.conf
+  ansible.builtin.lineinfile:
+    dest: /etc/resolv.conf
+    search_string: 'nameserver {{ dns_ip }}'
+    insertbefore: '^nameserver'
+    line: 'nameserver {{ dns_ip }}'
+  become: yes

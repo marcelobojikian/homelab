@@ -1,0 +1,29 @@
+- name: Terraform Project CREATE
+  hosts: localhost
+  gather_facts: false
+
+  vars:
+    tf_module_path: "{{ PAS_MODULE }}/terraform"
+
+  tasks:
+
+    - name: Load default config
+      community.general.terraform:
+        project_path: '{{ PAS_TF_PATH }}'
+        state: present
+        force_init: true
+        variables: 
+          ansible_path: "{{ PAS_ANSIBLE_PATH }}"
+          security_path: "{{ PAS_MODULE }}/security"
+        variables_files:
+          - "{{ tf_module_path }}/module.tfvars.json"
+          - "{{ tf_module_path }}/dns.tfvars.json"
+          - "{{ tf_module_path }}/proxmox.tfvars.json"
+
+    - name: Starting project {{ tf_project }}
+      community.general.terraform:
+        project_path: '{{ PAS_TF_PATH }}/{{ tf_project }}/'
+        state: present
+        force_init: true
+        variables_files:
+          - "{{ tf_module_path }}/{{ tf_project }}.tfvars"

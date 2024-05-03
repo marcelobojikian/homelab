@@ -1,0 +1,9 @@
+
+- name: Download Cockpit extra projects
+  include_role:
+    name: functions
+    tasks_from: github/install-last-release
+  vars:
+    user: '45Drives'
+    project_name: 'cockpit-{{ item }}'
+    suffix: '_all.deb'

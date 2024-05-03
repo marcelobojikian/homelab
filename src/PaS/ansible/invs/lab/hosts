@@ -1,0 +1,5 @@
+[storage]
+storage.homelab.lan
+
+[dns]
+dns.homelab.lan

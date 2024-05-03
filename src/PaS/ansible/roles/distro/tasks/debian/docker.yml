@@ -1,0 +1,109 @@
+# https://docs.docker.com/engine/install/debian/
+
+######################################## HOW TO USE
+# - name: Install docker
+#   include_role:
+#     name: distro
+#     tasks_from: debian/docker
+#   vars:
+#     distro: debian
+############################################### END
+
+- name: Uninstall old versions
+  ansible.builtin.apt:
+    pkg:
+      - docker.io
+      - docker-doc
+      - docker-compose
+      - podman-docker
+      - containerd
+      - runc
+    state: absent
+  become: yes
+
+- name: Update all packages to the latest version
+  ansible.builtin.apt:
+    pkg:
+      # - apt-transport-https
+      - ca-certificates
+      - curl
+      # - gnupg
+      # - software-properties-common
+    update_cache: yes
+    cache_valid_time: 3600
+    state: latest
+  become: yes
+
+- name: Create directory for Docker's GPG key
+  ansible.builtin.file:
+    path: /etc/apt/keyrings
+    state: directory
+    mode: '0755'
+  become: yes
+
+- name: Add Docker's official GPG key
+  ansible.builtin.get_url:
+    url: https://download.docker.com/linux/{{ distro }}/gpg
+    dest: /etc/apt/keyrings/docker.asc
+    mode: '0644'
+    force: true
+  become: yes
+  
+- name: Get DEB architecture
+  shell: dpkg --print-architecture
+  register: deb_architecture
+  
+- name: Get DEB lsb codename
+  shell: . /etc/os-release && echo "$VERSION_CODENAME"
+  register: deb_codename  
+
+- name: Print architecture variables
+  ansible.builtin.debug:
+    msg: "Architecture: {{ deb_architecture.stdout }}, Codename: {{ deb_codename.stdout }}"
+
+- name: Add Docker repository
+  ansible.builtin.apt_repository:
+    repo: >-
+      deb [arch={{ deb_architecture.stdout | default(deb_architecture.stdout) }}
+      signed-by=/etc/apt/keyrings/docker.asc]
+      https://download.docker.com/linux/{{ distro }} {{ deb_codename.stdout }} stable
+    filename: docker
+    state: present
+  become: yes
+
+- name: Install Docker and related packages
+  ansible.builtin.apt:
+    pkg:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+      - docker-buildx-plugin
+      - docker-compose-plugin
+    state: present
+    update_cache: true
+  become: yes
+
+# https://docs.docker.com/engine/install/linux-postinstall/    
+
+- name: Add Docker group
+  ansible.builtin.group:
+    name: docker
+    state: present
+  become: yes
+
+- name: Add user to Docker group
+  ansible.builtin.user:
+    name: "{{ ansible_user }}"
+    groups: docker
+    append: true
+  become: yes
+
+- name: Enable and start Docker services
+  ansible.builtin.systemd:
+    name: "{{ item }}"
+    enabled: true
+    state: started
+  loop:
+    - docker.service
+    - containerd.service
+  become: yes

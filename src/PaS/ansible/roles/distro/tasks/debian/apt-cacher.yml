@@ -1,0 +1,41 @@
+
+- name: Install repositories apt-cache-ng
+  ansible.builtin.apt:
+    pkg:
+      - apt-cacher-ng
+    update_cache: yes
+    cache_valid_time: 3600
+    state: latest
+  become: yes
+
+- name: Bind address
+  ansible.builtin.lineinfile:
+    path: /etc/apt-cacher-ng/acng.conf
+    regexp: '# BindAddress: localhost 192.168.7.254 publicNameOnMainInterface'
+    line: 'BindAddress: 0.0.0.0'
+  become: yes
+
+- name: Create proxy file (cache server)
+  ansible.builtin.copy:
+    dest: "/etc/apt/apt.conf.d/00aptproxy"
+    content: >-
+      Acquire::http::Proxy "http://{{ server_cache_ip }}:3142";
+      Acquire::https::Proxy "false";
+  become: yes
+
+- name: restart apt-cacher-ng
+  ansible.builtin.service:
+    name: apt-cacher-ng
+    enabled: true
+    state: restarted
+  become: yes
+
+- name: Allow proto tcp from 192.168.1.0/24 to any port 3142
+  community.general.ufw:
+    rule: allow
+    proto: tcp
+    src: 192.168.1.0/24
+    to_ip: any
+    to_port: '3142'
+  become: yes
+

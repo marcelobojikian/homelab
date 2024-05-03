@@ -1,0 +1,3 @@
+# https://github.com/ansible-collections/cloud.terraform/blob/main/README.md
+plugin: cloud.terraform.terraform_provider
+project_path: /opt/terraform/pas/example

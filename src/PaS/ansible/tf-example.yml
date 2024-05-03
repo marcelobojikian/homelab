@@ -1,0 +1,19 @@
+- name: Install Project Example
+  hosts: example
+  gather_facts: false
+  tasks:
+
+    - name: Set FQDN {{ inventory_hostname }}
+      include_role:
+        name: configure
+        tasks_from: debian/fqdn
+
+    - name: Set DNS
+      include_role:
+        name: configure
+        tasks_from: debian/dns
+
+    - name: Install Debian Cockpit
+      include_role:
+        name: distro
+        tasks_from: debian/cockpit

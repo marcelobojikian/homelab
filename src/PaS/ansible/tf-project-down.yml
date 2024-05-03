@@ -1,0 +1,15 @@
+- name: Terraform Project DESTROY
+  hosts: localhost
+  gather_facts: false
+
+  vars:
+    tf_module_path: "{{ PAS_MODULE }}/terraform"
+
+  tasks:
+
+    - name: Destroying project {{ tf_project }}
+      community.general.terraform:
+        project_path: '{{ PAS_TF_PATH }}/{{ tf_project }}/'
+        state: absent
+        variables_files:
+          - "{{ tf_module_path }}/{{ tf_project }}.tfvars"

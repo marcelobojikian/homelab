@@ -1,0 +1,27 @@
+
+- name: Set Hostname
+  ansible.builtin.hostname:
+    name: "{{ inventory_hostname_short }}"
+    use: debian
+  become: yes
+
+- name: Add FQDN to /etc/hosts
+  ansible.builtin.lineinfile:
+    dest: /etc/hosts
+    regexp: '^127\.0\.1\.1'
+    line: "127.0.1.1 {{ inventory_hostname }} {{ inventory_hostname_short }}"
+    state: present
+  become: yes
+
+- name: Check if cloud init is installed.
+  ansible.builtin.stat: path="/etc/cloud/templates/hosts.debian.tmpl"
+  register: cloud_installed
+
+- name: Add FQDN to /etc/cloud/templates/hosts.debian.tmpl
+  ansible.builtin.lineinfile:
+    dest: /etc/cloud/templates/hosts.debian.tmpl
+    regexp: '^127\.0\.1\.1'
+    line: "127.0.1.1 {{ inventory_hostname }} {{ inventory_hostname_short }}"
+    state: present
+  when: cloud_installed.stat.exists
+  become: yes

@@ -1,0 +1,57 @@
+######################################## HOW TO USE
+##
+# - name: Test Tool Github (Install Last Release)
+#   hosts: cockpit
+#   gather_facts: false
+
+#   vars:
+#     github:
+#       user: 45Drives
+#       default_suffix: noneeee
+#       projects:
+#         - name: cockpit-identities
+#           suffix: _all.deb
+#         - name: cockpit-file-sharing
+#           suffix: _all.deb
+#         - name: cockpit-navigator
+#           suffix: _all.deb
+
+#   tasks:
+
+#     - name: Launch Tool
+#       include_role:
+#         name: tools
+#         tasks_from: github/install-last-release
+#       vars:
+#         user: '{{ github.user }}'
+#         project_name: '{{ project.name }}'
+#         suffix: '{{ project.suffix | default(github.default_suffix) }}'
+#       with_items: '{{ github.projects }}'
+#       loop_control:
+#         loop_var: project
+
+############################################### END
+
+- name: Download github JSON
+  ansible.builtin.get_url:
+    url: 'https://api.github.com/repos/{{ user }}/{{ project_name }}/releases/latest'
+    dest: '/tmp/{{ project_name }}{{ suffix }}.json'
+
+- name: Read JSON file
+  ansible.builtin.slurp:
+    src: '/tmp/{{ project_name }}{{ suffix }}.json'
+  register: json_file
+
+- name: Load content data from JSON file
+  set_fact:
+    content_remote_data: "{{ json_file['content'] | b64decode | from_json }}" 
+
+- name: Download github Project
+  ansible.builtin.get_url:
+    url: "{{ content_remote_data.assets | map(attribute='browser_download_url') | regex_search('.*(https://(.*?' + suffix | string +'))', '\\1') | first }}"
+    dest: '/tmp/{{ project_name }}{{ suffix }}'
+
+- name: Install App .deb
+  ansible.builtin.apt:
+    deb: '/tmp/{{ project_name }}{{ suffix }}'
+  become: yes
