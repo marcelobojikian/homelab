@@ -13,7 +13,7 @@
     state: present
   become: yes
 
-- name: Check if cloud init is installed.
+- name: Check if hosts.debian.tmpl is updated.
   ansible.builtin.stat: path="/etc/cloud/templates/hosts.debian.tmpl"
   register: cloud_installed
 
