@@ -1,5 +1,5 @@
 
-- name: Install repositories dependencies
+- name: Install DNS dependencies
   ansible.builtin.apt:
     pkg:
       - bind9

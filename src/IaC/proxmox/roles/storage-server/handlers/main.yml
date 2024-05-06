@@ -1,6 +1,12 @@
 ---
-  - name: restart nsf-server
-    service:
-      name: nfs-kernel-server
-      state: restarted
-    become: yes
+- name: restart nsf-server
+  service:
+    name: nfs-kernel-server
+    state: restarted
+  become: yes
+  
+- name: restart autofs
+  ansible.builtin.service:
+    name: autofs
+    state: restarted
+  become: yes

@@ -1,42 +1,6 @@
----
-- name: Install dependencias
-  ansible.builtin.apt:
-    pkg:
-    - nfs-kernel-server 
-    state: latest
-    update_cache: yes
-  become: yes
 
-- name: Create a LOCAL NFS path
-  ansible.builtin.file:
-    path: "{{ local_path }}/{{ item.path }}"
-    state: directory
-  with_items:
-    - path: "server"
-    - path: "usb"
-    - path: "git"
-  become: yes
+- name: Start NFS task
+  ansible.builtin.import_tasks: nfs.yml
 
-- name: Create a REMOTE NFS path
-  ansible.builtin.file:
-    path: "{{ remote_path }}/{{ item.path }}"
-    state: directory
-  with_items:
-    - path: "backup"
-  become: yes
-
-- name: Copy file ( backup original )
-  ansible.builtin.copy:
-    src: '/etc/exports'
-    dest: '/etc/exports.orig'
-    force: no
-    remote_src: yes
-  become: yes
-
-- name: Configure NFS folders to export
-  ansible.builtin.template:
-    src: "exports.j2"
-    dest: /etc/exports
-  become: yes
-  notify:
-    - restart nsf-server
+- name: Start USB task
+  ansible.builtin.import_tasks: usb.yml

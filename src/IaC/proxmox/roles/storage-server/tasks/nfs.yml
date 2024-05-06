@@ -1,0 +1,39 @@
+
+- name: Install NFS dependencias
+  ansible.builtin.apt:
+    pkg:
+    - nfs-kernel-server 
+    state: latest
+    update_cache: yes
+  become: yes
+
+- name: Create a NFS path
+  ansible.builtin.file:
+    path: "{{ nfs_path }}"
+    state: directory
+    # mode: '0755'
+  become: yes
+
+- name: Backup file exports
+  ansible.builtin.copy:
+    src: '/etc/exports'
+    dest: '/etc/exports.orig'
+    force: no
+    remote_src: yes
+  become: yes
+
+- name: Configure NFS folders to export
+  ansible.builtin.template:
+    src: "exports.j2"
+    dest: /etc/exports
+  become: yes
+  notify:
+    - restart nsf-server
+
+- name: Allow from 192.168.1.0/24 to any port nfs
+  community.general.ufw:
+    rule: allow
+    src: 192.168.1.0/24
+    to_ip: any
+    to_port: 'nfs'
+  become: yes

@@ -1,0 +1,41 @@
+
+- name: Install USB dependencias
+  ansible.builtin.apt:
+    pkg:
+    - autofs
+    state: latest
+    update_cache: yes
+  become: yes
+
+- name: Create USB path
+  ansible.builtin.file:
+    path: "{{ usb_path }}"
+    state: directory
+    # mode: '0755'
+  become: yes
+
+- name: Backup file auto.master
+  ansible.builtin.copy:
+    src: '/etc/auto.master'
+    dest: '/etc/auto.master.orig'
+    force: no
+    remote_src: yes
+  become: yes
+
+- name: Create /etc/auto.master
+  ansible.builtin.copy:
+    dest: /etc/auto.master
+    content: |
+      +dir:/etc/auto.master.d
+      +auto.master
+      {{ usb_path }} /etc/auto.usb --ghost --timeout=60
+  become: yes
+  
+- name: Create /etc/auto.usb
+  ansible.builtin.copy:
+    dest: /etc/auto.usb
+    content: |
+      acasis -fstype=auto UUID={{ usb_uuid }}
+  notify:
+    - restart autofs
+  become: yes

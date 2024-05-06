@@ -2,13 +2,13 @@
 **/.PaS/*
 **/requirements.yml.md5
 
-**/IaC/**/proxmox/users
-**/IaC/**/proxmox/roles
-**/IaC/**/proxmox/storages
-**/IaC/**/proxmox/sudo_users
+**/IaC/**/group_vars/proxmox/users
+**/IaC/**/group_vars/proxmox/roles
+**/IaC/**/group_vars/proxmox/storages
+**/IaC/**/group_vars/proxmox/sudo_users
 
-**/IaC/**/node/machines
-**/IaC/**/node/os_images
+**/IaC/**/group_vars/node/machines
+**/IaC/**/group_vars/node/os_images
 
 # Created by https://www.toptal.com/developers/gitignore/api/terraform
 # Edit at https://www.toptal.com/developers/gitignore?templates=terraform

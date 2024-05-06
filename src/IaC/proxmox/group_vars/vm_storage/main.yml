@@ -1,2 +1,3 @@
-local_path: "/exports/local"
-remote_path: "/exports/remote"
+nfs_path: "/storage/nfs"
+smb_path: "/storage/smb"
+usb_path: "/storage/usb"
