@@ -8,7 +8,7 @@
     update_cache: yes
   become: yes
 
-- name: Grant user ansible to manage NFS
+- name: Grant user ansible to manage Storage
   ansible.posix.acl:
     path: "{{ item }}"
     entity: '{{ ansible_user }}'
