@@ -1,0 +1,29 @@
+
+- name: Install SMB dependencias
+  ansible.builtin.apt:
+    pkg:
+    - samba 
+    state: latest
+    update_cache: yes
+  become: yes
+
+- name: Create a SMB path
+  ansible.builtin.file:
+    path: "{{ smb_path }}"
+    state: directory
+  become: yes
+
+- name: Configure SMB folders to share
+  ansible.builtin.template:
+    src: smb.conf.j2
+    dest: /etc/samba/smb.conf
+  become: yes
+  notify:
+    - restart smbd
+
+- name: Allow from 192.168.1.0/24 Samba
+  community.general.ufw:
+    rule: allow
+    src: 192.168.1.0/24
+    app: 'Samba'
+  become: yes

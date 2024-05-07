@@ -2,7 +2,7 @@
 - name: Install NFS dependencias
   ansible.builtin.apt:
     pkg:
-    - nfs-kernel-server 
+    - nfs-kernel-server
     state: latest
     update_cache: yes
   become: yes
@@ -11,7 +11,6 @@
   ansible.builtin.file:
     path: "{{ nfs_path }}"
     state: directory
-    # mode: '0755'
   become: yes
 
 - name: Backup file exports
@@ -30,10 +29,12 @@
   notify:
     - restart nsf-server
 
-- name: Allow from 192.168.1.0/24 to any port nfs
+- name: Set to only use NFS v4 and single port (2049,111)
+  ansible.builtin.import_tasks: nfs-v4-restricted.yml
+
+- name: Allow from 192.168.1.0/24 app nfs
   community.general.ufw:
     rule: allow
     src: 192.168.1.0/24
-    to_ip: any
-    to_port: 'nfs'
+    app: 'nfs'
   become: yes

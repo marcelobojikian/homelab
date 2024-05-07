@@ -11,7 +11,6 @@
   ansible.builtin.file:
     path: "{{ usb_path }}"
     state: directory
-    # mode: '0755'
   become: yes
 
 - name: Backup file auto.master

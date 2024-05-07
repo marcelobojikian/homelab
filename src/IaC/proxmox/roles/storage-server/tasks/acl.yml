@@ -1,0 +1,22 @@
+
+- name: Install NFS dependencias
+  ansible.builtin.apt:
+    pkg:
+    - nfs4-acl-tools
+    - acl 
+    state: latest
+    update_cache: yes
+  become: yes
+
+- name: Grant user ansible to manage NFS
+  ansible.posix.acl:
+    path: "{{ item }}"
+    entity: '{{ ansible_user }}'
+    etype: user
+    permissions: rwx
+    state: present
+  with_items: 
+    - "{{ nfs_path }}"
+    - "{{ smb_path }}"
+  become: yes
+

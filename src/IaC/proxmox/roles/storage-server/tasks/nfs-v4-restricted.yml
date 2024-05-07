@@ -1,0 +1,31 @@
+
+- name: Set NEED_STATD on /etc/default/nfs-common
+  ansible.builtin.lineinfile:
+    path: /etc/default/nfs-common
+    regexp: '^NEED_STATD='
+    line: 'NEED_STATD="no"'
+  become: yes
+
+- name: Set NEED_IDMAPD on /etc/default/nfs-common
+  ansible.builtin.lineinfile:
+    path: /etc/default/nfs-common
+    regexp: '^NEED_IDMAPD='
+    line: 'NEED_IDMAPD="yes"'
+  become: yes
+
+- name: Set RPCMOUNTDOPTS on /etc/default/nfs-kernel-server   
+  ansible.builtin.lineinfile:
+    path: /etc/default/nfs-kernel-server
+    regexp: '^RPCMOUNTDOPTS='
+    line: 'RPCMOUNTDOPTS="--manage-gids -N 2 -N 3"'
+  become: yes
+
+- name: Add RPCNFSDOPTS on /etc/default/nfs-kernel-server   
+  ansible.builtin.lineinfile:
+    dest: /etc/default/nfs-kernel-server
+    search_string: 'RPCNFSDOPTS="-N 2 -N 3"'
+    insertafter: 'RPCSVCGSSDOPTS=""'
+    line: 'RPCNFSDOPTS="-N 2 -N 3"'
+  notify:
+    - restart nsf-server
+  become: yes

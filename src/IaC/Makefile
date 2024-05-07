@@ -3,6 +3,7 @@ dev_mode:
 	chmod g+r proxmox/group_vars/all/vault.yml
 	chmod g+r proxmox/group_vars/node/vault.yml
 	chmod g+r proxmox/group_vars/proxmox/vault.yml
+	chmod g+r proxmox/group_vars/vm_storage/vault.yml
 
 encrypt:
 	./scripts/encrypt.sh proxmox ../module/security/vault/production.key

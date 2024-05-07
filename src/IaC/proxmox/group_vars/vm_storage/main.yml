@@ -1,3 +1,5 @@
+dns_ip: 192.168.1.200
+
 nfs_path: "/storage/nfs"
 smb_path: "/storage/smb"
 usb_path: "/storage/usb"
