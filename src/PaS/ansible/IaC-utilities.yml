@@ -1,0 +1,50 @@
+- name: Install DNS utilities
+  hosts: dns
+  gather_facts: false
+  tasks:
+    - name: Install Debian Cockpit
+      include_role:
+        name: distro
+        tasks_from: debian/cockpit
+
+- name: Install Storage utilities
+  hosts: storage
+  gather_facts: false
+
+  vars:
+    github:
+      user: 45Drives
+      default_suffix: _all.deb
+      projects:
+        - name: cockpit-identities
+        - name: cockpit-file-sharing
+        - name: cockpit-navigator
+
+  tasks:
+
+    - name: Install Debian Cockpit
+      include_role:
+        name: distro
+        tasks_from: debian/cockpit
+
+    - name: Install Extra Cockpit Apps
+      include_role:
+        name: functions
+        tasks_from: github/install-last-release
+      vars:
+        user: '{{ github.user }}'
+        project_name: '{{ project.name }}'
+        suffix: '{{ project.suffix | default(github.default_suffix) }}'
+      with_items: '{{ github.projects }}'
+      loop_control:
+        loop_var: project
+
+    # # Simple way
+    # - name: Install Extra Cockpit Apps
+    #   include_role:
+    #     name: distro
+    #     tasks_from: debian/cockpit-extra
+    #   with_items: 
+    #     - identities
+    #     - file-sharing
+    #     - navigator
