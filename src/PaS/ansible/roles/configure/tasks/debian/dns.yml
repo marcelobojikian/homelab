@@ -1,4 +1,12 @@
 
+# https://wiki.debian.org/NetworkConfiguration#The_resolvconf_program
+- name: Add DNS to /etc/network/interfaces.d/50-cloud-init
+  ansible.builtin.lineinfile:
+    path: /etc/network/interfaces.d/50-cloud-init
+    regexp: '^[\s]+dns-nameservers 192.168.1.254'
+    line: '    dns-nameservers 192.168.1.200 192.168.1.254'
+  become: yes
+
 - name: Add DNS to /etc/resolv.conf
   ansible.builtin.lineinfile:
     dest: /etc/resolv.conf
