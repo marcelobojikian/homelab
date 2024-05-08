@@ -1,0 +1,39 @@
+
+- name: Install Storage repositories
+  ansible.builtin.apt:
+    pkg:
+      - nfs-common
+      - autofs
+    update_cache: yes
+    cache_valid_time: 3600
+    state: latest
+  become: yes
+
+- name: Create storage directory
+  ansible.builtin.file:
+    path: /mnt/storage
+    state: directory
+    mode: '0755'
+  become: yes
+
+- name: Create /etc/auto.master
+  ansible.builtin.copy:
+    dest: /etc/auto.master
+    content: |
+      +dir:/etc/auto.master.d
+      +auto.master
+      /mnt/storage /etc/auto.nfs --ghost --timeout=60
+  become: yes
+
+- name: Create /etc/auto.nfs
+  ansible.builtin.copy:
+    dest: /etc/auto.nfs
+    content: |
+      nfs -fstype=nfs4,rw,soft,intr nfs.storage.homelab.lan:/storage/nfs
+  become: yes
+
+- name: restart autofs
+  ansible.builtin.service:
+    name: autofs
+    state: restarted
+  become: yes
