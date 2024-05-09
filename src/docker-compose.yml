@@ -12,8 +12,12 @@ services:
       dockerfile: config/Dockerfile
     image: homelab:v1
     container_name: homelab
+    user: 1001:1000
     volumes: 
       - homelab:/home/semaphore
+      - ./IaC/proxmox:/opt/ansible/iac
+      - ./PaS/ansible:/opt/ansible/pas
+      - ./PaS/terraform:/opt/terraform/pas
     ports:
       - 3000:3000
     env_file:
